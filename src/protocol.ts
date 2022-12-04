@@ -2,7 +2,7 @@
  * https://github.com/mpv-player/mpv/blob/master/DOCS/edl-mpv.rst
  */
 
-type IOptions = {
+type IEDLOptions = {
   windowTitle?: string
   videoTitle: string
   videoUrl: string
@@ -10,7 +10,7 @@ type IOptions = {
   subtitleUrl: string
 }
 
-export function generateEDLUrl({ windowTitle, videoTitle, videoUrl, audioUrl }: IOptions) {
+export function generateEDLUrl({ windowTitle, videoTitle, videoUrl, audioUrl }: IEDLOptions) {
   const lines: string[] = [
     `!global_tags,title=${windowTitle || videoTitle}`,
 
@@ -27,4 +27,20 @@ export function generateEDLUrl({ windowTitle, videoTitle, videoUrl, audioUrl }: 
   // `%${subtitleUrl.length}%${subtitleUrl}`,
 
   return `edl://${lines.join(';')}`
+}
+
+type PlaylistItem = string | { url: string; title: string }
+export function generatePlaylistUrl(items: PlaylistItem[]) {
+  const list: string[] = [
+    '#EXTM3U',
+    ...items
+      .map((item) => {
+        if (typeof item === 'string') return item
+        const { url, title } = item
+        return [`#EXTINF:0,${title}`, url]
+      })
+      .flat(),
+  ]
+
+  return `memory://${list.join('\n')}`
 }
