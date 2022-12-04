@@ -44,9 +44,10 @@ async function onLoadHook() {
   const json = JSON.parse(stdout.trim()) as SingleVideo[]
   const video = json[0]
 
-  const bestId = Object.keys(video.streams).sort(qualityDescendantsSorter)[0]
+  // TODO: 设置是否选择 hevc
+  const bestId = getBestId(video, false)
   const stream = video.streams[bestId]
-  console.log('using best quality stream, id = %s, quality = %j', bestId, stream.quality)
+  console.log('using best quality stream, id = %s, quality = %s', bestId, stream.quality)
 
   // const urls = stream.parts.map((x) => x.url)
   // console.log(urls)
@@ -86,6 +87,18 @@ async function onLoadHook() {
     return [...arr, `${field}: ${value}`]
   }, [])
   iina.mpv.set('file-local-options/http-header-fields', headersAsList)
+}
+
+function getBestId(video: SingleVideo, useHevc = true) {
+  let ids = Object.keys(video.streams)
+
+  // 移除所有的 hevc 再排序
+  if (!useHevc) {
+    ids = ids.filter((id) => !video.streams[id].quality.includes('hev'))
+  }
+
+  const bestId = ids.sort(qualityDescendantsSorter)[0]
+  return bestId
 }
 
 /**
