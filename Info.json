@@ -1,0 +1,21 @@
+{
+  "name": "Bilibili Plugin",
+  "identifier": "fun.magicdawn.iina.bilibili",
+  "version": "0.0.1",
+  "ghVersion": 3,
+  "ghRepo": "magicdawn/example-repo",
+  "description": "a simple iina plugin",
+  "author": {
+    "name": "magicdawn",
+    "email": "magicdawn@qq.com",
+    "url": "https://iina.io"
+  },
+  "entry": "dist/index.js",
+  "globalEntry": "dist/global.js",
+  "permissions": ["show-osd", "network-request", "video-overlay", "file-system"],
+  "allowedDomains": ["iina.io", "*.iina.io"],
+  "preferencePage": "preference.html",
+  "preferenceDefaults": {
+    "cookie": ""
+  }
+}

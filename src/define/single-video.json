@@ -1,0 +1,95 @@
+[
+  {
+    "url": "https://www.bilibili.com/video/BV1jt4y1M7XH",
+    "site": "哔哩哔哩 bilibili.com",
+    "title": "“人生就像一次旅行”",
+    "type": "video",
+    "streams": {
+      "16-12": {
+        "id": "16-12",
+        "quality": "流畅 360P hev1.1.6.L120.90",
+        "parts": [
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30011.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=f4e28c8ff688d88d4b445298a0fe53e8&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=38488&logo=A0000001",
+            "size": 461865,
+            "ext": "mp4"
+          },
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=c583dfcac570afeae38ce0d2a114c944&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=17025&logo=A0000001",
+            "size": 204307,
+            "ext": "m4a"
+          }
+        ],
+        "size": 666172,
+        "ext": "mp4",
+        "NeedMux": true
+      },
+      "16-7": {
+        "id": "16-7",
+        "quality": "流畅 360P avc1.64001E",
+        "parts": [
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30016.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=dbf557310eab51f785fa304991de5543&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=45763&logo=A0000001",
+            "size": 549165,
+            "ext": "mp4"
+          },
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=c583dfcac570afeae38ce0d2a114c944&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=17025&logo=A0000001",
+            "size": 204307,
+            "ext": "m4a"
+          }
+        ],
+        "size": 753472,
+        "ext": "mp4",
+        "NeedMux": true
+      },
+      "32-12": {
+        "id": "32-12",
+        "quality": "清晰 480P hev1.1.6.L120.90",
+        "parts": [
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30033.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=985ffdbf03c4ab997c2e08fad5ccb2b3&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=55561&logo=A0000001",
+            "size": 666735,
+            "ext": "mp4"
+          },
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=c583dfcac570afeae38ce0d2a114c944&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=17025&logo=A0000001",
+            "size": 204307,
+            "ext": "m4a"
+          }
+        ],
+        "size": 871042,
+        "ext": "mp4",
+        "NeedMux": true
+      },
+      "32-7": {
+        "id": "32-7",
+        "quality": "清晰 480P avc1.64001F",
+        "parts": [
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30032.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=fd9beb5fcf5570b8cbb3e2ceefd8a209&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=93621&logo=A0000001",
+            "size": 1123461,
+            "ext": "mp4"
+          },
+          {
+            "url": "https://xy115x223x29x103xy.mcdn.bilivideo.cn:4483/upgcxcode/63/41/880384163/880384163-1-30280.m4s?e=ig8euxZM2rNcNbdlhoNvNC8BqJIzNbfqXBvEqxTEto8BTrNvN0GvT90W5JZMkX_YN0MvXg8gNEV4NC8xNEV4N03eN0B5tZlqNxTEto8BTrNvNeZVuJ10Kj_g2UB02J0mN0B5tZlqNCNEto8BTrNvNC7MTX502C8f2jmMQJ6mqF2fka1mqx6gqj0eN0B599M=&uipk=5&nbs=1&deadline=1670112520&gen=playurlv2&os=mcdn&oi=2876372274&trid=00000efbaf6c2fb4413793183272a5ab42b5u&mid=0&platform=pc&upsig=c583dfcac570afeae38ce0d2a114c944&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&mcdnid=1002697&bvc=vod&nettype=0&orderid=0,3&buvid=&build=0&agrr=0&bw=17025&logo=A0000001",
+            "size": 204307,
+            "ext": "m4a"
+          }
+        ],
+        "size": 1327768,
+        "ext": "mp4",
+        "NeedMux": true
+      }
+    },
+    "caption": {
+      "danmaku": {
+        "url": "https://comment.bilibili.com/880384163.xml",
+        "size": 0,
+        "ext": "xml"
+      },
+      "subtitle": null
+    },
+    "err": null
+  }
+]

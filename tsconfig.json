@@ -1,0 +1,21 @@
+{
+  "include": ["./src"],
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "ES2021",
+    "lib": ["ES2022"],
+    "module": "ES2022",
+    "types": ["iina-plugin-definition/iina", "node/path", "node/util"],
+    "noEmit": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  },
+  "ts-node": {
+    "swc": true,
+    "compilerOptions": {
+      "module": "CommonJS",
+      "types": ["node"],
+      "esModuleInterop": true
+    }
+  }
+}
