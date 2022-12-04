@@ -1,8 +1,8 @@
-import { SingleVideo } from './define/single-video'
 import './dts/console'
-import { zsh } from './utils'
-import { pick } from 'lodash-es'
+
+import { type SingleVideo } from './define/single-video'
 import { generateEDLUrl } from './edl'
+import { zsh } from './utils'
 
 // https://www.bilibili.com/video/BV1jt4y1M7XH/
 
