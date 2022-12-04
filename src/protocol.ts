@@ -29,13 +29,12 @@ export function generateEDLUrl({ windowTitle, videoTitle, videoUrl, audioUrl }: 
   return `edl://${lines.join(';')}`
 }
 
-type PlaylistItem = string | { url: string; title: string }
+export type PlaylistItem = { url: string; title: string }
 export function generatePlaylistUrl(items: PlaylistItem[]) {
   const list: string[] = [
     '#EXTM3U',
     ...items
       .map((item) => {
-        if (typeof item === 'string') return item
         const { url, title } = item
         return [`#EXTINF:0,${title}`, url]
       })

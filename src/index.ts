@@ -1,17 +1,18 @@
 import './dts/console'
 
-import { type SingleVideo } from './define/single-video'
-import { generateEDLUrl, generatePlaylistUrl } from './protocol'
-import { zsh } from './utils'
 import URI from 'urijs'
-import sha, { sha1 } from 'sha.js'
-import dayjs from 'dayjs'
+import { type SingleVideo } from './define/single-video'
+import { generateEDLUrl, generatePlaylistUrl, PlaylistItem } from './protocol'
+import { removeUrlQuery, zsh } from './utils'
+import { pruneCache, PlaylistCache, SingleVideoCache } from './cache'
 
 // 非常 weird 的写法, 但是 mpv 要求这样
 iina.mpv.addHook('on_load', 10, async (next) => {
   await onLoadHook()
   next()
 })
+
+pruneCache()
 
 // https://github.com/mpv-player/mpv/blob/master/player/lua/ytdl_hook.lua
 async function onLoadHook() {
@@ -22,52 +23,88 @@ async function onLoadHook() {
   console.log('loadUrl = %s, process by current plugin ? %s', loadUrl, processHere)
   if (!processHere) return
 
-  const usePlaylist = toResolvePlaylist(loadUrl)
-  const videosArr = await execLux(loadUrl, usePlaylist)
-  if (!videosArr?.length) return
-
   const open = (type: 'single' | 'playlist', url: string) => {
     console.log('opening type=%s url=%s', type, url)
     iina.mpv.set('stream-open-filename', url)
     setBilibiliHeaders()
-    return
   }
 
-  if (!usePlaylist || videosArr.length === 1) {
-    const video = videosArr[0]
+  const usePlaylist = toResolvePlaylist(loadUrl)
+  if (!usePlaylist) {
+    const video = await getSingleVideo(loadUrl)
+    if (!video) return
     const edlUrl = videoToEDLUrl(video)
-    return open('single', edlUrl)
+    open('single', edlUrl)
+    return
   }
 
   // playlist
   else {
-    const playlistUrl = generatePlaylistUrl(
-      videosArr.map((v) => {
-        const urlAsPlaylistItem = URI(v.url).addQuery('playlist-item').href()
-        return {
-          title: v.title,
-          url: urlAsPlaylistItem,
-        }
-      })
-    )
+    const playlistItems = await getPlaylistItems(loadUrl)
+    if (!playlistItems?.length) return
 
-    const loadUrlBare = URI(loadUrl).query('').href()
-    const startIndex = videosArr.findIndex((item) => item.url === loadUrlBare)
-    console.log(
-      'find playlist-start',
-      loadUrlBare,
-      videosArr.map((v) => v.url),
-      startIndex
-    )
-    if (startIndex > -1) {
-      console.log('playlist-start %s', startIndex)
-      iina.mpv.set('playlist-start', startIndex)
-    }
+    playlistItems.forEach((item, index) => {
+      item.url = URI(item.url).setQuery({ __index__: index }).href()
+    })
 
+    const playlistUrl = generatePlaylistUrl(playlistItems)
     open('playlist', playlistUrl)
 
-    return
+    const loadUrlBare = removeUrlQuery(loadUrl)
+    const playIndex = playlistItems.findIndex((item) => removeUrlQuery(item.url) === loadUrlBare)
+    console.log('find playlist-start', loadUrlBare, playlistItems, playIndex)
+
+    if (playIndex > -1) {
+      console.log('playlist index %s', playIndex)
+      iina.mpv.set('playlist-start', playIndex.toString()) // 否则 iina 会 setDouble, 到 mpv 就失败了
+    }
   }
+}
+
+async function getSingleVideo(loadUrl: string): Promise<SingleVideo | undefined> {
+  {
+    const video = SingleVideoCache.get(loadUrl)
+    if (video) return video
+  }
+
+  {
+    const videosArr = await execLux(loadUrl, false)
+    const video = videosArr?.[0]
+    if (!video) return
+
+    SingleVideoCache.set(loadUrl, video)
+    return video
+  }
+}
+
+async function getPlaylistItems(loadUrl: string): Promise<PlaylistItem[] | undefined> {
+  {
+    const playlistItems = PlaylistCache.get(loadUrl)
+    if (playlistItems) return playlistItems
+  }
+
+  const videosArr = await execLux(loadUrl, true)
+  if (!videosArr?.length) return
+
+  // single video cache
+  videosArr.forEach((video) => {
+    SingleVideoCache.set(video.url, video)
+  })
+
+  const playlistItems = videosArr.map((v) => {
+    const urlAsPlaylistItem = URI(v.url).query('').addQuery('playlist-item').href()
+    return {
+      title: v.title,
+      url: urlAsPlaylistItem,
+    }
+  })
+
+  // playlist cache
+  videosArr.forEach((video) => {
+    PlaylistCache.set(video.url, playlistItems)
+  })
+
+  return playlistItems
 }
 
 function getBestId(video: SingleVideo, useHevc = true) {
@@ -195,41 +232,14 @@ function toResolvePlaylist(loadUrl: string) {
 }
 
 async function execLux(loadUrl: string, usePlaylist: boolean) {
-  const getCacheFile = (cacheKey: string) => {
-    return `@data/${dayjs().format('YYYY-MM-DD')}_${cacheKey}.json`
-  }
-
   const _c = getCookieOptions()
   const _p = usePlaylist ? '-p' : ''
-  const loadUrlBare = URI(loadUrl).query('').href() // 分P ???
+  const loadUrlBare = removeUrlQuery(loadUrl) // 分P ???
   const cmd = `lux -j ${_c} ${_p} '${loadUrlBare}'`
-  const currentCacheFile = getCacheFile(sha256(cmd))
-
-  if (iina.file.exists(currentCacheFile)) {
-    const cachedArr = JSON.parse(
-      iina.file.read(currentCacheFile, {})?.trim() || ''
-    ) as SingleVideo[]
-    if (cachedArr.length) {
-      return cachedArr
-    }
-  }
 
   // exec
   const { stdout, stderr } = await zsh(cmd)
   if (stderr.trim()) return
   const videosArr = JSON.parse(stdout.trim()) as SingleVideo[]
-
-  // save cache
-  const cacheContent = JSON.stringify(videosArr)
-  videosArr.forEach((v) => {
-    const cacheFile = getCacheFile(sha256(`lux -j ${_c} ${_p} '${v.url}'`))
-    iina.file.write(cacheFile, cacheContent)
-  })
-
   return videosArr
-}
-
-function sha256(str: string | object) {
-  if (typeof str !== 'string') str = JSON.stringify(str)
-  return sha('sha256').update(str).digest('hex')
 }
