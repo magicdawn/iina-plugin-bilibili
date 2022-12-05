@@ -1,9 +1,9 @@
 import './dts/console'
 
-import URI from 'urijs'
+import { URI } from './vendor'
 import { type SingleVideo } from './define/single-video'
 import { generateEDLUrl, generatePlaylistUrl, PlaylistItem } from './protocol'
-import { removeUrlQuery, zsh } from './utils'
+import { removeQueryForUrl, zsh } from './utils'
 import { pruneCache, PlaylistCache, SingleVideoCache } from './cache'
 
 // 非常 weird 的写法, 但是 mpv 要求这样
@@ -50,10 +50,9 @@ async function onLoadHook() {
     const playlistUrl = generatePlaylistUrl(playlistItems)
     open('playlist', playlistUrl)
 
-    const loadUrlBare = removeUrlQuery(loadUrl)
-    const playIndex = playlistItems.findIndex((item) => removeUrlQuery(item.url) === loadUrlBare)
+    const loadUrlBare = removeQueryForUrl(loadUrl)
+    const playIndex = playlistItems.findIndex((item) => removeQueryForUrl(item.url) === loadUrlBare)
     console.log('find playlist-start', loadUrlBare, playlistItems, playIndex)
-
     if (playIndex > -1) {
       console.log('playlist index %s', playIndex)
       iina.mpv.set('playlist-start', playIndex.toString()) // 否则 iina 会 setDouble, 到 mpv 就失败了
@@ -234,7 +233,7 @@ function toResolvePlaylist(loadUrl: string) {
 async function execLux(loadUrl: string, usePlaylist: boolean) {
   const _c = getCookieOptions()
   const _p = usePlaylist ? '-p' : ''
-  const loadUrlBare = removeUrlQuery(loadUrl) // 分P ???
+  const loadUrlBare = removeQueryForUrl(loadUrl) // 分P ???
   const cmd = `lux -j ${_c} ${_p} '${loadUrlBare}'`
 
   // exec

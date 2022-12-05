@@ -21,6 +21,7 @@ specifiers:
   husky: ^8.0.2
   iina-plugin-definition: ^0.0.7
   lint-staged: ^12.1.2
+  lowdb: ^5.0.5
   picocolors: ^1.0.0
   prettier: ^2.8.0
   sha.js: ^2.4.11
@@ -31,6 +32,7 @@ specifiers:
 
 dependencies:
   dayjs: 1.11.6
+  lowdb: 5.0.5
   sha.js: 2.4.11
   urijs: 1.19.11
 
@@ -1479,6 +1481,13 @@ packages:
       wrap-ansi: 6.2.0
     dev: true
 
+  /lowdb/5.0.5:
+    resolution: {integrity: sha512-7EWKmIMhNKA8TXFhL8t0p6N2LC53l3ZqsWQGSksGhhjrcms9rbKlyrAh2PzSGK5v0KPJ2W5VItBnC3NDRzOnzQ==}
+    engines: {node: '>=14.16'}
+    dependencies:
+      steno: 3.0.0
+    dev: false
+
   /lru-cache/6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
@@ -1799,6 +1808,11 @@ packages:
   /sourcemap-codec/1.4.8:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
     dev: true
+
+  /steno/3.0.0:
+    resolution: {integrity: sha512-uZtn7Ht9yXLiYgOsmo8btj4+f7VxyYheMt8g6F1ANjyqByQXEE2Gygjgenp3otHH1TlHsS4JAaRGv5wJ1wvMNw==}
+    engines: {node: '>=14.16'}
+    dev: false
 
   /string-argv/0.3.1:
     resolution: {integrity: sha512-a1uQGz7IyVy9YwhqjZIZu1c8JO8dNIe20xBmSS6qu9kv++k3JGzCVmprbNN5Kn+BgzD5E7YYwg1CcjuJMRNsvg==}

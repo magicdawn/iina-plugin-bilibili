@@ -1,64 +1,39 @@
-// const getCacheFile = (cacheKey: string) => {
-//   return `@data/${dayjs().format('YYYY-MM-DD')}_${cacheKey}.json`
-// }
-
-import dayjs from 'dayjs'
+import { dataOfToday, db } from './db'
 import { SingleVideo } from './define/single-video'
 import { PlaylistItem } from './protocol'
-import { iinaFileRead, removeUrlQuery, sha256 } from './utils'
+import { removeQueryForUrl, today } from './utils'
 
-const today = () => dayjs().format('YYYY-MM-DD')
-
-const singleVideoFile = (loadUrl: string) =>
-  `@data/${today()}__video__${sha256(
-    JSON.stringify({
-      loadUrlBare: removeUrlQuery(loadUrl),
-    })
-  )}.json`
-
-export function pruneCache() {
+export function pruneCache(persist = true) {
   console.log('-------prune cache---------')
-  const names = iina.file.list('@data/', { includeSubDir: false }) as unknown as IINA.FileItem[]
-  const keepPrefix = today() + '__'
-  names.forEach((item) => {
-    if (item.filename.startsWith(keepPrefix)) return
-    iina.file.delete('@data/' + item.filename)
-    console.log('removing %s', item.filename)
+  Object.keys(db.data!).forEach((key) => {
+    if (key !== today()) {
+      delete db.data![key]
+    }
   })
+
+  if (persist) {
+    db.write()
+  }
 }
 
 export const SingleVideoCache = {
   get(loadUrl: string): SingleVideo | undefined {
-    const file = singleVideoFile(loadUrl)
-    if (!iina.file.exists(file)) return
-    const content = iinaFileRead(file)
-    if (!content) return
-    return JSON.parse(content)
+    return dataOfToday().videos[removeQueryForUrl(loadUrl)] || undefined
   },
   set(loadUrl: string, video: SingleVideo) {
-    iina.file.write(singleVideoFile(loadUrl), JSON.stringify(video))
-    pruneCache()
+    dataOfToday().videos[removeQueryForUrl(loadUrl)] = video
+    pruneCache(false)
+    db.write()
   },
 }
 
-const playlistCacheFile = (loadUrl: string) =>
-  `@data/${today()}__playlist__${sha256(
-    JSON.stringify({
-      loadUrlBare: removeUrlQuery(loadUrl),
-    })
-  )}.json`
 export const PlaylistCache = {
   get(loadUrl: string): PlaylistItem[] | undefined {
-    const file = playlistCacheFile(loadUrl)
-    if (!iina.file.exists(file)) return
-    const content = iinaFileRead(file)
-    if (!content) return
-    const items = JSON.parse(content)
-    if (!items?.length) return
-    return items
+    return dataOfToday().playlist[removeQueryForUrl(loadUrl)]
   },
   set(loadUrl: string, playlistItems: PlaylistItem[]) {
-    iina.file.write(playlistCacheFile(loadUrl), JSON.stringify(playlistItems))
-    pruneCache()
+    dataOfToday().playlist[removeQueryForUrl(loadUrl)] = playlistItems
+    pruneCache(false)
+    db.write()
   },
 }

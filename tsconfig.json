@@ -5,13 +5,7 @@
     "target": "ES2021",
     "lib": ["ES2021"],
     "module": "ES2022",
-    "types": [
-      "iina-plugin-definition/iina",
-      "node/process",
-      "node/path",
-      "node/util",
-      "node/crypto"
-    ],
+    "types": ["iina-plugin-definition/iina", "node/process", "node/path", "node/util"],
     "noEmit": true,
     "moduleResolution": "node",
     "skipLibCheck": true,

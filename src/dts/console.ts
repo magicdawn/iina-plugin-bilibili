@@ -1,4 +1,4 @@
-import { format } from 'util'
+import { format } from '../vendor'
 
 export const console: IINA.API.Console = {
   log(msg: string, ...values: any[]) {

@@ -1,5 +1,4 @@
-import sha from 'sha.js'
-import URI from 'urijs'
+import { URI, sha, dayjs } from './vendor'
 
 export async function zsh(cmd: string): ReturnType<typeof iina.utils.exec> {
   console.log('zsh exec cmd = %s', cmd)
@@ -22,6 +21,8 @@ export function iinaFileRead(path: string) {
   return iina.file.read(path, {}) || ''
 }
 
-export function removeUrlQuery(url: string) {
+export function removeQueryForUrl(url: string) {
   return URI(url).query('').href()
 }
+
+export const today = () => dayjs().format('YYY-MM-DD')

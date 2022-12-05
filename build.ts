@@ -5,7 +5,7 @@ import esbuild from 'esbuild'
 import { nodeBuiltin } from 'esbuild-node-builtin'
 import fse from 'fs-extra'
 import { homedir } from 'os'
-import { join } from 'path'
+import path, { join } from 'path'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import Info from './Info.json'
@@ -76,32 +76,81 @@ function processSymlinks() {
 
 async function build() {
   const outdir = join(__dirname, 'dist')
-  await esbuild.build({
-    entryPoints: [
-      //
-      __dirname + '/src/index.ts',
-      __dirname + '/src/global.ts',
-    ],
-    bundle: true,
-    outdir,
-    charset: 'utf8',
-    platform: 'neutral',
-    plugins: [nodeBuiltin()],
-    mainFields: ['module', 'browser', 'main'],
-    define: {
-      'process.env.NODE_ENV': JSON.stringify(
-        argv.prod ? 'production' : process.env.NODE_ENV || 'development'
-      ),
-    },
-    watch: argv.watch
-      ? {
-          onRebuild(error, result) {
-            if (error) consola.error('watch build failed:', error)
-            else consola.success('watch build success')
+
+  function getShareOptions(label: 'vendor' | 'entry'): esbuild.BuildOptions {
+    return {
+      bundle: true,
+      outdir,
+      charset: 'utf8',
+      platform: 'neutral',
+      format: 'cjs',
+      plugins: [nodeBuiltin()],
+      mainFields: ['module', 'browser', 'main'],
+      define: {
+        'process.env.NODE_ENV': JSON.stringify(
+          argv.prod ? 'production' : process.env.NODE_ENV || 'development'
+        ),
+      },
+      watch: argv.watch
+        ? {
+            onRebuild(error, result) {
+              if (error) consola.error('watch build failed:', error)
+              else consola.success('[%s] watch build success', label)
+            },
+          }
+        : false,
+    }
+  }
+
+  const buildVendor = async () => {
+    return esbuild.build({
+      ...getShareOptions('vendor'),
+      entryPoints: [__dirname + '/src/vendor.ts'],
+    })
+  }
+
+  const buildEntry = async () => {
+    const shared = getShareOptions('entry')
+    return esbuild.build({
+      ...shared,
+      entryPoints: [
+        //
+        __dirname + '/src/index.ts',
+        __dirname + '/src/global.ts',
+      ],
+      external: ['./src/vendor.ts'],
+      // logLevel: 'verbose',
+      plugins: [
+        //
+        ...(shared.plugins || []),
+        {
+          name: 'resolve vendor',
+          setup(build) {
+            // build.onResolve({ filter: /.*/ }, (args) => {
+            //   console.log('onResolve', args)
+            //   return null
+            // })
+            // build.onLoad({ filter: /.*/ }, (args) => {
+            //   console.log('onLoad', args)
+            //   return null
+            // })
+            build.onResolve({ filter: /\.\/vendor/ }, (args) => {
+              let file = path.join(args.resolveDir, args.path)
+              if (file.endsWith('.ts')) file += '.ts'
+              if (file !== __dirname + '/src/vendor.ts') return null
+              return {
+                external: true,
+                path: './vendor.js', // result require('./vendor')
+              }
+            })
           },
-        }
-      : false,
-  })
+        },
+      ],
+    })
+  }
+
+  await buildVendor()
+  await buildEntry()
 
   consola.success('bundled success')
 }
