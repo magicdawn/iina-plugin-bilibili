@@ -136,7 +136,7 @@ async function build() {
             // })
             build.onResolve({ filter: /\.\/vendor/ }, (args) => {
               let file = path.join(args.resolveDir, args.path)
-              if (file.endsWith('.ts')) file += '.ts'
+              if (!file.endsWith('.ts')) file += '.ts'
               if (file !== __dirname + '/src/vendor.ts') return null
               return {
                 external: true,

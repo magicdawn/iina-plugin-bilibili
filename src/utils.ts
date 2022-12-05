@@ -25,4 +25,4 @@ export function removeQueryForUrl(url: string) {
   return URI(url).query('').href()
 }
 
-export const today = () => dayjs().format('YYY-MM-DD')
+export const today = () => dayjs().format('YYYY-MM-DD')
