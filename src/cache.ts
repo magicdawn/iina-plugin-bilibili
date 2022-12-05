@@ -29,10 +29,12 @@ export const SingleVideoCache = {
 
 export const PlaylistCache = {
   get(loadUrl: string): PlaylistItem[] | undefined {
-    return dataOfToday().playlist[removeQueryForUrl(loadUrl)]
+    return dataOfToday().playlist.find((item) =>
+      item.playlistUrls.includes(removeQueryForUrl(loadUrl))
+    )?.playlistItems
   },
-  set(loadUrl: string, playlistItems: PlaylistItem[]) {
-    dataOfToday().playlist[removeQueryForUrl(loadUrl)] = playlistItems
+  set(playlistUrls: string[], playlistItems: PlaylistItem[]) {
+    dataOfToday().playlist.push({ playlistUrls, playlistItems })
     pruneCache(false)
     db.write()
   },

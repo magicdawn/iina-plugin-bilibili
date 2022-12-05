@@ -1,10 +1,10 @@
 import './dts/console'
 
-import { URI } from './vendor'
+import { PlaylistCache, pruneCache, SingleVideoCache } from './cache'
 import { type SingleVideo } from './define/single-video'
 import { generateEDLUrl, generatePlaylistUrl, PlaylistItem } from './protocol'
 import { removeQueryForUrl, zsh } from './utils'
-import { pruneCache, PlaylistCache, SingleVideoCache } from './cache'
+import { URI } from './vendor'
 
 // 非常 weird 的写法, 但是 mpv 要求这样
 iina.mpv.addHook('on_load', 10, async (next) => {
@@ -44,7 +44,8 @@ async function onLoadHook() {
     if (!playlistItems?.length) return
 
     playlistItems.forEach((item, index) => {
-      item.url = URI(item.url).setQuery({ __index__: index }).href()
+      const uri = URI(item.url).setQuery({ 'playlist-item': '', '__index__': index })
+      item.url = uri.href()
     })
 
     const playlistUrl = generatePlaylistUrl(playlistItems)
@@ -55,7 +56,7 @@ async function onLoadHook() {
     console.log('find playlist-start', loadUrlBare, playlistItems, playIndex)
     if (playIndex > -1) {
       console.log('playlist index %s', playIndex)
-      iina.mpv.set('playlist-start', playIndex.toString()) // 否则 iina 会 setDouble, 到 mpv 就失败了
+      iina.mpv.set('file-local-options/playlist-start', playIndex.toString()) // 否则 iina 会 setDouble, 到 mpv 就失败了
     }
   }
 }
@@ -91,17 +92,14 @@ async function getPlaylistItems(loadUrl: string): Promise<PlaylistItem[] | undef
   })
 
   const playlistItems = videosArr.map((v) => {
-    const urlAsPlaylistItem = URI(v.url).query('').addQuery('playlist-item').href()
-    return {
-      title: v.title,
-      url: urlAsPlaylistItem,
-    }
+    return { title: v.title, url: URI(v.url).query('').href() }
   })
 
   // playlist cache
-  videosArr.forEach((video) => {
-    PlaylistCache.set(video.url, playlistItems)
-  })
+  PlaylistCache.set(
+    videosArr.map((i) => i.url),
+    playlistItems
+  )
 
   return playlistItems
 }

@@ -1,7 +1,7 @@
 import { SingleVideo } from './define/single-video'
 import { PlaylistItem } from './protocol'
 import { iinaFileRead, today } from './utils'
-import { dayjs, LowSync, SyncAdapter } from './vendor'
+import { LowSync, SyncAdapter } from './vendor'
 
 export class IinaSyncAdapter<T> implements SyncAdapter<T> {
   dbfile: string
@@ -21,7 +21,10 @@ export class IinaSyncAdapter<T> implements SyncAdapter<T> {
 
 type DayData = {
   videos: Record<string, SingleVideo>
-  playlist: Record<string, PlaylistItem[]>
+  playlist: {
+    playlistUrls: string[]
+    playlistItems: PlaylistItem[]
+  }[]
 }
 export type DBData = Record<string, DayData>
 
@@ -29,18 +32,20 @@ const adapter = new IinaSyncAdapter<DBData>('db')
 export const db = new LowSync(adapter)
 
 // assign default data
+db.read()
 db.data ||= {}
 db.data[today()] ||= {
   videos: {},
-  playlist: {},
+  playlist: [],
 }
 
+//
 export const dataOfToday = () => {
   // assign default data
   db.data ||= {}
   db.data[today()] ||= {
     videos: {},
-    playlist: {},
+    playlist: [],
   }
   return db.data[today()]
 }
